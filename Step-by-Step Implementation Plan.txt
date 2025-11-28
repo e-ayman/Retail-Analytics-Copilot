@@ -1,0 +1,61 @@
+Step-by-Step Implementation Plan
+Phase 1: Setup (30 min)
+
+Download Northwind database
+Create 4 markdown files in docs/
+Install dependencies (DSPy, LangGraph, sklearn, etc.)
+Pull Phi-3.5-mini via Ollama
+Create project structure
+
+Phase 2: Build RAG System (45 min)
+
+Chunk markdown files (paragraph-level)
+Build TF-IDF/BM25 index
+Implement retrieval function returning (chunk_id, content, score)
+Test retrieval on sample queries
+
+Phase 3: Build SQL Tools (45 min)
+
+Create schema introspection (read table names, columns via PRAGMA)
+Build SQL executor with error capture
+Test joins (Orders → Order Details → Products)
+Implement revenue calculation query
+
+Phase 4: DSPy Modules (60 min)
+
+Router Signature: Question → rag|sql|hybrid
+NL→SQL Signature: Question + Schema + Constraints → SQL
+Synthesizer Signature: Question + SQL Results + Doc Chunks → Typed Answer
+Wire up to local Phi-3.5-mini LM
+
+Phase 5: LangGraph Workflow (60 min)
+
+Define state schema (question, retrieved_docs, sql, results, answer, etc.)
+Implement 6+ nodes as functions
+Add conditional edges (e.g., route based on query type)
+Implement repair loop with retry counter
+Add checkpointing/logging
+
+Phase 6: DSPy Optimization (45 min)
+
+Create 20-40 training examples
+Choose one module (e.g., NL→SQL)
+Run optimizer (e.g., BootstrapFewShot)
+Measure before/after (e.g., % valid SQL)
+Document results
+
+Phase 7: CLI & Testing (30 min)
+
+Build run_agent_hybrid.py with exact flags
+Process sample_questions_hybrid_eval.jsonl
+Generate outputs_hybrid.jsonl
+Validate output format
+Check all 6 test cases
+
+Phase 8: Documentation (15 min)
+
+Write README with:
+
+Graph design (bullet points)
+DSPy optimization results
+Assumptions (e.g., cost approximation)
